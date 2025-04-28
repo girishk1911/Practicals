@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User List</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #e9ecef; padding: 20px; }
+    h2 { color: #333; }
+    ul { list-style: none; padding: 0; }
+    li { background: #fff; margin-bottom: 10px; padding: 10px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h2>Registered Users</h2>
+  <ul id="userList"></ul>
+
+  <script>
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const list = document.getElementById('userList');
+    users.forEach(u => {
+      list.innerHTML += `<li><strong>${u.name}</strong> <br>Email: ${u.email} <br>Mobile: ${u.mobile} <br>City: ${u.city}</li>`;
+    });
+  </script>
+</body>
+</html>
