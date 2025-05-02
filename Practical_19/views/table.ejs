@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Marks Table</title>
+  <style>
+    table { border-collapse: collapse; width: 80%; margin: 20px auto; }
+    th, td { border: 1px solid #999; padding: 8px; text-align: center; }
+    th { background-color: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center;">Student Marks Table</h2>
+  <table>
+    <tr>
+      <th>Name</th><th>Roll No</th><th>WAD</th><th>DSBDA</th><th>CNS</th><th>CC</th><th>AI</th>
+    </tr>
+    <% students.forEach(student => { %>
+      <tr>
+        <td><%= student.Name %></td>
+        <td><%= student.Roll_No %></td>
+        <td><%= student.WAD_Marks %></td>
+        <td><%= student.DSBDA_Marks %></td>
+        <td><%= student.CNS_Marks %></td>
+        <td><%= student.CC_Marks %></td>
+        <td><%= student.AI_marks %></td>
+      </tr>
+    <% }) %>
+  </table>
+</body>
+</html>

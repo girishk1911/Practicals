@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Employee Management</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input, button { margin: 5px; padding: 5px; }
+    table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+  </style>
+</head>
+<body>
+  <h1>Employee Management System</h1>
+
+  <h2>Add / Update Employee</h2>
+  <input type="text" id="id" placeholder="Employee ID (for update/delete)">
+  <input type="text" id="name" placeholder="Name">
+  <input type="text" id="department" placeholder="Department">
+  <input type="text" id="designation" placeholder="Designation">
+  <input type="number" id="salary" placeholder="Salary">
+  <input type="date" id="joiningDate" placeholder="Joining Date">
+  <br>
+  <button onclick="addEmployee()">Add Employee</button>
+  <button onclick="updateEmployee()">Update Employee</button>
+  <button onclick="deleteEmployee()">Delete Employee</button>
+  <button onclick="getEmployees()">View All Employees</button>
+
+  <h2>All Employees</h2>
+  <table id="employeeTable">
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Department</th><th>Designation</th><th>Salary</th><th>Joining Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const apiUrl = '/api/employees';
+
+    async function addEmployee() {
+      const employee = getFormData();
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(employee)
+      });
+      alert(await res.text());
+      getEmployees();
+    }
+
+    async function getEmployees() {
+      const res = await fetch(apiUrl);
+      const employees = await res.json();
+      const table = document.querySelector('#employeeTable tbody');
+      table.innerHTML = '';
+      employees.forEach(emp => {
+        const row = `<tr>
+          <td>${emp._id}</td><td>${emp.name}</td><td>${emp.department}</td>
+          <td>${emp.designation}</td><td>${emp.salary}</td>
+          <td>${new Date(emp.joiningDate).toLocaleDateString()}</td>
+        </tr>`;
+        table.innerHTML += row;
+      });
+    }
+
+    async function updateEmployee() {
+      const id = document.getElementById('id').value;
+      if (!id) return alert('Please enter employee ID to update');
+      const employee = getFormData();
+      const res = await fetch(`${apiUrl}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(employee)
+      });
+      alert(await res.text());
+      getEmployees();
+    }
+
+    async function deleteEmployee() {
+      const id = document.getElementById('id').value;
+      if (!id) return alert('Please enter employee ID to delete');
+      const res = await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+      alert(await res.text());
+      getEmployees();
+    }
+
+    function getFormData() {
+      return {
+        name: document.getElementById('name').value,
+        department: document.getElementById('department').value,
+        designation: document.getElementById('designation').value,
+        salary: Number(document.getElementById('salary').value),
+        joiningDate: document.getElementById('joiningDate').value
+      };
+    }
+
+    // Initial load
+    getEmployees();
+  </script>
+</body>
+</html>
