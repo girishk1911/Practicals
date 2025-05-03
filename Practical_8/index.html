@@ -8,68 +8,52 @@
 </head>
 <body class="bg-light">
 
-<div class="container p-4">
+<div class="container mt-5">
   <div class="bg-white p-4 rounded shadow">
     <h2 class="text-center mb-4">Event Registration</h2>
 
-    <form class="needs-validation" novalidate>
-      <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="name" placeholder="Name" required title="Enter your full name">
-        <label for="name">Full Name</label>
-        <div class="invalid-feedback">Required</div>
+    <form>
+
+      <!-- Full Name -->
+      <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input type="text" id="name" name="name" class="form-control" required
+               pattern="[A-Za-z\s]{3,}" placeholder="Enter your full name"
+               title="Name should have at least 3 letters and only alphabets/spaces">
       </div>
 
-      <div class="form-floating mb-3">
-        <input type="email" class="form-control" id="email" placeholder="Email" required title="Enter a valid email">
-        <label for="email">Email</label>
-        <div class="invalid-feedback">Required</div>
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" name="email" class="form-control" required
+               placeholder="Enter your email">
       </div>
 
-      <div class="form-floating mb-3">
-        <input type="tel" class="form-control" id="phone" placeholder="Phone" required title="Enter your phone">
-        <label for="phone">Phone</label>
-        <div class="invalid-feedback">Required</div>
+      <!-- Phone -->
+      <div class="mb-3">
+        <label for="phone" class="form-label">Phone</label>
+        <input type="tel" id="phone" name="phone" class="form-control" required
+               pattern="[0-9]{10}" placeholder="10-digit phone number"
+               title="Enter a valid 10-digit phone number">
       </div>
 
-      <div class="form-floating mb-3">
-        <select class="form-select" id="event" required title="Select event">
+      <!-- Event Select -->
+      <div class="mb-3">
+        <label for="event" class="form-label">Select Event</label>
+        <select id="event" name="event" class="form-select" required>
           <option value="">Choose...</option>
           <option>Workshop</option>
           <option>Seminar</option>
           <option>Competition</option>
         </select>
-        <label for="event">Select Event</label>
-        <div class="invalid-feedback">Select one</div>
       </div>
 
-      <div class="text-center">
-        <button class="btn btn-primary w-100" type="submit">Register</button>
-      </div>
+      <!-- Submit -->
+      <button type="submit" class="btn btn-primary w-100">Register</button>
+
     </form>
   </div>
 </div>
-
-<script src="js/bootstrap.bundle.min.js"></script>
-
-<script>
-// Tooltip
-const tooltips = document.querySelectorAll('[title]')
-tooltips.forEach(el => new bootstrap.Tooltip(el))
-
-// Validation
-(() => {
-  const forms = document.querySelectorAll('.needs-validation')
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', e => {
-      if (!form.checkValidity()) {
-        e.preventDefault()
-        e.stopPropagation()
-      }
-      form.classList.add('was-validated')
-    })
-  })
-})();
-</script>
 
 </body>
 </html>
