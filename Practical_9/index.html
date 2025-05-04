@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Simple Weather App</title>
+  <title>Offline Weather App (AJAX)</title>
 </head>
 <body>
   <h2>Weather App</h2>
@@ -11,29 +11,28 @@
   <div id="result"></div>
 
   <script>
-    const weatherData = {
-      "Pune": { temp: 30, humidity: 70, condition: "Sunny" },
-      "Delhi": { temp: 40, humidity: 50, condition: "Hot" },
-      "Mumbai": { temp: 32, humidity: 80, condition: "Humid" },
-      "Nagpur": { temp: 38, humidity: 60, condition: "Clear" }
-    };
-
     function getWeather() {
       const city = document.getElementById('cityInput').value.trim();
       document.getElementById('result').innerHTML = "Loading...";
-      setTimeout(() => {
-        const data = weatherData[city];
-        if (data) {
-          document.getElementById('result').innerHTML = `
-            <h3>Weather in ${city}</h3>
-            Temp: ${data.temp}°C<br>
-            Humidity: ${data.humidity}%<br>
-            Condition: ${data.condition}
-          `;
-        } else {
-          document.getElementById('result').innerHTML = "City not found!";
-        }
-      }, 500); // simulate AJAX delay
+
+      fetch('weather.json')
+        .then(res => res.json())
+        .then(data => {
+          const weather = data[city];
+          if (weather) {
+            document.getElementById('result').innerHTML = `
+              <h3>Weather in ${city}</h3>
+              Temp: ${weather.temp}°C<br>
+              Humidity: ${weather.humidity}%<br>
+              Condition: ${weather.condition}
+            `;
+          } else {
+            document.getElementById('result').innerHTML = "City not found!";
+          }
+        })
+        .catch(err => {
+          document.getElementById('result').innerHTML = "Error loading weather data!";
+        });
     }
   </script>
 </body>
