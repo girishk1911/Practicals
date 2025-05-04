@@ -13,12 +13,15 @@
   <p>Experience the finest food and art in town!</p>
 
   <h2>Our Menu</h2>
-  <ul>
-    <li>Margherita Pizza - $10</li>
-    <li>Caesar Salad - $8</li>
-    <li>Spaghetti Carbonara - $12</li>
-    <li>Chocolate Cake - $6</li>
-  </ul>
+  <ul id="menulist"></ul>
+  <script>
+    fetch('/api/menu')
+      .then(res => res.json())
+        .then(data =>{
+          document.getElementById('menulist').innerHTML =
+          data.map(u => `<li>${u.menu} - ${u.price}</li>`).join(''); 
+        });
+  </script>
 
   <h2>Gallery</h2>
   <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap;">

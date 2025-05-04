@@ -13,7 +13,8 @@
     fetch('/api/employees')
       .then(res => res.json())
       .then(data => {
-        document.getElementById('employees').innerHTML = data.map(emp => `
+        document.getElementById('employees').innerHTML = 
+          data.map(emp => `
           <div style="border:1px solid #ccc; padding:10px; width:200px; text-align:center;">
             <img src="${emp.image}" width="100" style="border-radius:50%;"><br>
             <h3>${emp.name}</h3>
