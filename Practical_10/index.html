@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Simple To-Do List</title>
-</head>
+<html>
+<head><title>To-Do List</title></head>
 <body>
   <h2>To-Do List</h2>
   <input id="taskInput" placeholder="New Task">
@@ -11,24 +8,51 @@
   <ul id="taskList"></ul>
 
   <script>
-    function sendToServer(data) {
-      return new Promise(res => setTimeout(() => res(console.log('Saved:', data)), 300));
+    async function loadTasks() {
+  const res = await fetch('/tasks');
+  const tasks = await res.json();
+  const list = document.getElementById('taskList');
+  list.innerHTML = ''; // Clear the list first
+  for (let i = 0; i < tasks.length; i++) {
+    const task = tasks[i];
+    list.innerHTML += `
+      <li>
+        <input id="t${i}" value="${task}">
+        <button onclick="updateTask(${i})">Update</button>
+        <button onclick="deleteTask(${i})">Delete</button>
+      </li>`;
+  }
+}
+
+
+    async function addTask() {
+      const task = document.getElementById('taskInput').value;
+      if (!task) return;
+      await fetch('/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ task })
+      });
+      document.getElementById('taskInput').value = '';
+      loadTasks();
     }
 
-    function addTask() {
-      const input = document.getElementById('taskInput');
-      if (!input.value.trim()) return;
-      const li = document.createElement('li');
-      li.innerHTML = `${input.value} <button onclick="deleteTask(this)">❌</button>`;
-      document.getElementById('taskList').appendChild(li);
-      sendToServer({ action: 'add', task: input.value });
-      input.value = '';
+    async function updateTask(i) {
+      const task = document.getElementById('t' + i).value;
+      await fetch('/tasks/' + i, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ task })
+      });
+      loadTasks();
     }
 
-    function deleteTask(btn) {
-      const li = btn.parentNode;
-      sendToServer({ action: 'delete', task: li.firstChild.textContent.trim() }).then(() => li.remove());
+    async function deleteTask(i) {
+      await fetch('/tasks/' + i, { method: 'DELETE' });
+      loadTasks();
     }
+
+    loadTasks();
   </script>
 </body>
 </html>
