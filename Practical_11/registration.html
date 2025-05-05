@@ -90,8 +90,8 @@
       };
 
       // ✅ Validations
-      if (!/^\S+@\S+\.\S+$/.test(user.email)) return alert('Invalid Email');
-      if (user.mobile.length !== 10) return alert('Mobile must be 10 digits');
+      // if (!/^\S+@\S+\.\S+$/.test(user.email)) return alert('Invalid Email');
+      // if (user.mobile.length !== 10) return alert('Mobile must be 10 digits');
 
       users.push(user);
       postData(users).then(data => {
@@ -103,11 +103,14 @@
 
     document.getElementById('loginForm').onsubmit = e => {
       e.preventDefault();
-      const u = users.find(x => x.email === document.getElementById('loginEmail').value && x.password === document.getElementById('loginPass').value);
+      const u = users.find(x => 
+        x.email === document.getElementById('loginEmail').value && 
+        x.password === document.getElementById('loginPass').value);
       if (u) {
         window.location.href = "list.html";
       } else {
         alert('Invalid login!');
+
       }
     };
   </script>

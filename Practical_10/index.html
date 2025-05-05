@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head><title>To-Do List</title></head>
+
+<head>
+  <title>To-Do List</title>
+</head>
+
 <body>
   <h2>To-Do List</h2>
   <input id="taskInput" placeholder="New Task">
@@ -9,20 +13,20 @@
 
   <script>
     async function loadTasks() {
-  const res = await fetch('/tasks');
-  const tasks = await res.json();
-  const list = document.getElementById('taskList');
-  list.innerHTML = ''; // Clear the list first
-  for (let i = 0; i < tasks.length; i++) {
-    const task = tasks[i];
-    list.innerHTML += `
+      const res = await fetch('/tasks');
+      const task = await res.json();
+      const list = document.getElementById('taskList');
+      list.innerHTML = ''; 
+      for (let i = 0; i < tasks.length; i++) {
+        const task = tasks[i];
+        list.innerHTML += `
       <li>
         <input id="t${i}" value="${task}">
         <button onclick="updateTask(${i})">Update</button>
         <button onclick="deleteTask(${i})">Delete</button>
       </li>`;
-  }
-}
+      }
+    }
 
 
     async function addTask() {
@@ -48,11 +52,14 @@
     }
 
     async function deleteTask(i) {
-      await fetch('/tasks/' + i, { method: 'DELETE' });
+      await fetch('/tasks/' + i, { 
+        method: 'DELETE' 
+      });
       loadTasks();
     }
 
     loadTasks();
   </script>
 </body>
+
 </html>
